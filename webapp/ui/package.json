@@ -91,7 +91,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://0.0.0.0:8000",
+  "proxy": "http://webapp:8000",
   "jest": {
     "roots": [
       "<rootDir>/src"

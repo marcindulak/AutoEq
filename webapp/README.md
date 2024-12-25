@@ -22,6 +22,21 @@ npm start
 
 Go to `http://localhost:3000`
 
+## Development with docker compose
+Needs to be done from root directory, not from webapp
+```shell
+export BUILDKIT_PROGRESS=plain
+docker compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g)
+docker compose up --detach --wait
+```
+
+Go to `http://localhost:3000`
+
+Stop and remove volumes that store e.g. npm modules and build
+```shell
+docker compose down --volumes
+```
+
 ## Build Docker File
 Needs to be done from root directory, not from webapp
 ```shell

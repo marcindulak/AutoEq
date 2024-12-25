@@ -1,0 +1,43 @@
+services:
+  webapp:
+    build: .
+    container_name: autoeq_webapp
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    image: autoeq
+    ports:
+      - 127.0.0.1:8000:8000
+    volumes:
+      - .:/app
+      - webapp_ui_build:/app/webapp/ui/build
+      - webapp_ui_node_modules:/app/webapp/ui/node_modules
+    working_dir: /app/webapp
+
+  ui:
+    build: .
+    command: sh -c "npm ci && npm run build && npm run start"
+    container_name: autoeq_ui
+    depends_on:
+      - webapp
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    image: autoeq
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - .:/app
+      - webapp_ui_build:/app/webapp/ui/build
+      - webapp_ui_node_modules:/app/webapp/ui/node_modules
+    working_dir: /app/webapp/ui
+
+volumes:
+  webapp_ui_build:
+  webapp_ui_node_modules:
